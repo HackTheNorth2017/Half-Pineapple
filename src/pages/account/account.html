@@ -1,0 +1,31 @@
+<ion-header>
+    <ion-navbar color="light">
+        <button ion-button menuToggle>
+            <ion-icon name="ios-menu-outline"></ion-icon>
+        </button>
+        <ion-title>
+            {{'ACCOUNT' | translate }}
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content padding id="account">
+<div  class="default-padding">
+    <form>
+        <h1 style="color:#000000;">
+            {{'YOUR_ADDRESS' | translate }}
+        </h1>
+    </form>
+
+    <div class="show-list-numbers-and-dots">
+        <p style="color:#000000;">
+            {{selectedWallet?.address.pretty()}}
+        </p>
+    </div>
+
+    <div class="spacer" style="width:300px;height:40px;" id="account-spacer2"></div>
+
+    <button id="account-button2" ion-button color="positive" block on-click="logout()">
+        {{'LOGOUT' | translate }}
+    </button>
+    </div>
+</ion-content>
