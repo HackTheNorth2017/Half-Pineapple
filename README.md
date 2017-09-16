@@ -1,4 +1,4 @@
-## NEMPay
+## Half Pinneaple
 
 [HalfPinneaple](#) is a service ... [TODO]
 

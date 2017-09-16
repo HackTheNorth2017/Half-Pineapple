@@ -103,17 +103,6 @@ export class AlertProvider {
 
     }
 
-    showMessageTooLarge() {
-        this.translate.get(['ALERT_SHOW_ATTACHED_MESSAGE_IS_TOO_LARGE', 'OK'], {}).subscribe((res) => {
-            let alert = this.alertCtrl.create({
-                title: res['ALERT_SHOW_ATTACHED_MESSAGE_IS_TOO_LARGE'],
-                buttons: [res['OK']]
-            });
-
-            alert.present();
-        });
-    }
-
     showWeakPassword() {
         this.translate.get(['ALERT_WEAK_PASSWORD', 'OK'], {}).subscribe((res) => {
             let alert = this.alertCtrl.create({

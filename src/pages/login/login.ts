@@ -7,9 +7,8 @@ import {AlertProvider} from '../../providers/alert/alert.provider';
 import {WalletProvider} from '../../providers/wallet/wallet.provider';
 
 import {SignupPage} from '../signup/signup';
-
+import {PayPage} from '../pay/pay';
 import {SimpleWallet} from 'nem-library';
-
 @Component({
     selector: 'page-login',
     templateUrl: 'login.html'
@@ -79,7 +78,7 @@ export class LoginPage {
                         this.common.privateKey = this.nem.passwordToPrivateKey(this.common.password, this.selectedWallet);
                         this.wallet.setSelectedWallet(this.selectedWallet);
                         loader.dismiss();
-                       /* this.navCtrl.setRoot();*/
+                        this.navCtrl.setRoot(PayPage);
                     } catch (err) {
                         console.log(err);
                         this.common.privateKey = '';                        

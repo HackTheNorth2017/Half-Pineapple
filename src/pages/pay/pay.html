@@ -1,0 +1,30 @@
+<ion-header>
+    <ion-navbar color="light">
+        <button ion-button menuToggle>
+            <ion-icon name="ios-menu-outline"></ion-icon>
+        </button>
+        <ion-title>
+            {{'CONNECTION' | translate }}
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content padding id="account">
+    <h5>{{'SELECT_CONNECTION_TYPE' | translate }}</h5>
+    <div class="selector ">
+        
+        <div on-click="selectHalfPinneapple()">
+            Half Pineapple
+        </div>
+
+        <div on-click="selectFullPineapple()">
+            Full Pineapple
+        </div>
+        
+        <div class="">
+            <div class="spacer" style="height:20px;"></div>
+            <button ion-button color="positive" block on-click="startTransaction()" [disabled]="amount == 0">
+                {{'PAY_AND_CONNECT' | translate}}
+            </button>
+        </div>
+    </div>
+</ion-content>

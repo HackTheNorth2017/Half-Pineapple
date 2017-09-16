@@ -25,6 +25,7 @@ import {MyApp} from './app.component';
 import {AccountPage} from '../pages/account/account';
 import {LoginPage} from '../pages/login/login';
 import {SignupPage} from '../pages/signup/signup';
+import {PayPage} from '../pages/pay/pay';
 
 
 export function createTranslateLoader(http: Http) {
@@ -37,6 +38,7 @@ export function createTranslateLoader(http: Http) {
         AccountPage,
         LoginPage,
         SignupPage,
+        PayPage,
         DivideByExponentialBaseTenPipe,
     ],
     imports: [
@@ -59,6 +61,7 @@ export function createTranslateLoader(http: Http) {
         AccountPage,
         LoginPage,
         SignupPage,
+        PayPage
     ],
     providers: [
         StatusBar,

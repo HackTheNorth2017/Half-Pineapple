@@ -9,17 +9,9 @@
 
   "ACCOUNT": "Account",
   "YOUR_ADDRESS": "Your address",
-  "SHARE_ADDRESS": "Share Address",
-  "PRIVATE_KEY": "Private Key",
   "PRIVATE_KEY_SUBTITLE": "To view your private key, insert your password or passphrase.",
   "PASSWORD_WARNING" : "Your private key holds all the power of your account. It is a priority to make sure it is stored safely somewhere offline.",
   "IVE_COPIED_IT": "I've copied it",
-  "SHOW_PRIVATE_KEY": "Show Private Key",
-  "HIDE_PRIVATE_KEY": "Hide Private Key",
-
-  "BALANCE": "Balance",
-  "TRANSFER_BUTTON": "Send",
-  "RECEIVE_BUTTON": "Receive",
 
   "PASSWORD": "Password",
   "CREATE_OR_IMPORT_AN_ACCOUNT": "CREATE OR IMPORT AN ACCOUNT",
@@ -40,47 +32,10 @@
 
   "IMPORT_ACCOUNT_QR_WARNING": "To use QR wallet scanner, you must use the same password as your current wallet account",
 
-  "TRANSACTIONS": "Transactions",
-  "CONFIRMED_TRANSACTIONS": "Confirmed Transactions",
-  "PENDING_TRANSACTIONS": "Pending Transactions",
-  "NOTHING_TO_SHOW": "Nothing to show",
-  "REMOTE_ACCOUNT": "Remote Account",
-  "NAMESPACE": "Namespace",
-  "SUBNAMESPACE_OF": "Subnamespace of",
-  "MOSAIC_CREATED": "Mosaic Created",
-  "SUPPLY_INCREASE": "Supply Increased",
-  "SUPPLY_DECREASED": "Supply Decreased",
-  "MOSAICS": "Mosaics",
-  "ENCRYPED": "Encrypted",
-
-  "TRANSFER": "Send",
-  "FROM": "From",
-  "TO": "To",
-  "MESSAGE": "Message",
-  "FEE": "Fee",
-  "LEVY": "Levy",
-  "DATE": "Date",
-
-  "RECEIVE": "Receive",
 
 
   "ADDRESS": "Address",
-  "RECIPIENT_ADDRESS": "Recipient Address",
-  "SCAN_QR": "Scan QR",
-  "AMOUNT": "Amount",
-  "MESSAGE": "Message",
-  "CONTINUE": "Continue",
-  "YOU_ARE_GOING_TO_SEND": "You are going to send",
-  "CONFIRM_TRANSACTION": "Confirm Transaction",
 
-
-  "CONTACT_LIST": "Address Book",
-  "NAME": "Name",
-  "CONTACT_ADDRESS": "Contact Address",
-  "UPDATE_CONTACT": "Update Contact",
-  "ADD_CONTACT": "Add Contact",
-  "CONTACT_UPDATED": "Contact Updated",
-  "CONTACT_CREATED": "Contact Created",
 
   "ALERT_NOT_WALLET_SELECTED": "Wallet not selected",
   "ALERT_PROVIDED_PASSWORD_INVALID" : "Provided password is invalid",
@@ -97,8 +52,6 @@
   "ALERT_SUBTITLE_ONLY_TESTNET": "Remember that at the moment it only works on testnet",
   "ALERT_PHONE_DISCONNECTED": "Your phone is disconnected from internet",
   "ALERT_SUBTITLE_PHONE_DISCONNECTED": "Open the app again once you have internet connection",
-  "ALERT_ONLY_MOBILE_DEVICE": "This functionallity it is only available in mobile devices",
-  "ALERT_CONTACT_ALREADY_EXISTS": "Contact with provided address already exists.",
   "NOTHING_TO_SHOW": "Nothing to show"
 
 

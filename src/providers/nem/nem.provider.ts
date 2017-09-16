@@ -3,13 +3,11 @@ import {Storage} from '@ionic/storage';
 
 import {
     NEMLibrary, NetworkTypes, SimpleWallet, 
-    Password, Address, Account, AccountHttp, 
+    Password, Address, AccountHttp,
     MosaicHttp, AccountOwnedMosaicsService, 
     MosaicTransferable, TransferTransaction,
-    TimeWindow, XEM, PlainMessage,
-    TransactionHttp, NemAnnounceResult,
-    Transaction, Mosaic, MosaicService, 
-    QRService, QRWalletText  
+    TimeWindow, PlainMessage,
+    TransactionHttp, NemAnnounceResult, MosaicId
 } from "nem-library";
 
 import { Observable } from "nem-library/node_modules/rxjs";
@@ -26,7 +24,6 @@ export class NemProvider {
     accountHttp: AccountHttp;
     mosaicHttp: MosaicHttp;
     transactionHttp: TransactionHttp;
-    qrService: QRService;
     accountOwnedMosaicsSerivce: AccountOwnedMosaicsService
 
     constructor(private storage: Storage) {
@@ -34,7 +31,6 @@ export class NemProvider {
         this.accountHttp = new AccountHttp();
         this.mosaicHttp = new MosaicHttp();
         this.transactionHttp = new TransactionHttp();
-        this.qrService = new QRService();
         this.accountOwnedMosaicsSerivce = new AccountOwnedMosaicsService(this.accountHttp, this.mosaicHttp);
     }
 
@@ -50,30 +46,6 @@ export class NemProvider {
     }
 
     /**
-     * Create Wallet from private key
-     * @param walletName wallet idenitifier for app
-     * @param password wallet's password
-     * @param privateKey account privateKey
-     * @param selected network
-     * * @return Promise with wallet created
-     */
-    public createPrivateKeyWallet(walletName, password, privateKey): SimpleWallet {
-        return SimpleWallet.createWithPrivateKey(walletName, new Password(password), privateKey);
-    }
-
-
-    /**
-     * Check if Address it is correct
-     * @param privateKey privateKey
-     * @param address address
-     * @return checkAddress
-     */
-
-    public checkAddress(privateKey: string, address: Address): boolean {
-        return Account.createWithPrivateKey(privateKey).address.plain() == address.plain();
-    }
-
-    /**
      * Gets private key from password and account
      * @param password
      * @param wallet
@@ -83,54 +55,6 @@ export class NemProvider {
         return wallet.unlockPrivateKey(new Password(password));
     }
 
-    /**
-     * Decrypt private key
-     * @param password password
-     * @param encriptedData Object containing private_key encrypted and salt
-     * @return Decrypted private key
-     */
-
-    public decryptPrivateKey(password: string, encriptedData: QRWalletText): string {
-        return this.qrService.decryptWalletQRText(new Password(password), encriptedData);
-    }
-
-    /**
-     * Generate Address QR Text
-     * @param address address
-     * @return Address QR Text
-     */
-    public generateAddressQRText(address: Address): string {
-        return this.qrService.generateAddressQRText(address);
-    }
-
-    /**
-     * Generate Address QR Text
-     * @param address address
-     * @return Address QR Text
-     */
-    public generateInvoiceQRText(address: Address, amount:number, message: string): string {
-        return this.qrService.generateTransactionQRText(address, amount, message);
-    }
-
-
-    /**
-     * Get mosaics form an account
-     * @param address address to check balance
-     * @return Promise with mosaics information
-     */
-    public getBalance(address: Address): Promise<MosaicTransferable[]> {
-        return this.accountOwnedMosaicsSerivce.fromAddress(address).toPromise();
-    }
-
-    /**
-     * Formats levy given mosaic object
-     * @param mosaic mosaic object
-     * @return Promise with levy fee formated
-     */
-    public formatLevy(mosaic: MosaicTransferable): Promise<number> {
-        let mosaicService = new MosaicService(new MosaicHttp());
-        return mosaicService.calculateLevy(mosaic).toPromise()
-    }
 
     /**
      * Check if acount belongs to the current Network
@@ -141,16 +65,6 @@ export class NemProvider {
         return address.network() == NEMLibrary.getNetworkType();
     }
 
-    /**
-     * Prepares xem transaction
-     * @param recipientAddress recipientAddress
-     * @param amount amount
-     * @param message message
-     * @return Return transfer transaction
-     */
-    public prepareTransaction(recipientAddress: Address, amount: number, message: string): TransferTransaction {
-        return TransferTransaction.create(TimeWindow.createWithDeadline(), recipientAddress, new XEM(amount), PlainMessage.create(message));
-    }
 
     /**
      * Prepares mosaic transaction
@@ -176,55 +90,10 @@ export class NemProvider {
         return this.transactionHttp.announceTransaction(signedTransaction);
     }
 
-    /**
-     * Adds to a transaction data mosaic definitions
-     * @param mosaics array of mosaics
-     * @return Promise with altered transaction
-     */
-    public addDefinitionToMosaics(mosaics: Mosaic[]): Observable<MosaicTransferable[]> {
-        return Observable.from(mosaics)
-        .flatMap((mosaic: Mosaic) => {
-            if (XEM.MOSAICID.equals(mosaic.mosaicId)) return Observable.of(new XEM(mosaic.quantity / Math.pow(10, XEM.DIVISIBILITY)));
-            else {
-              return this.mosaicHttp.getMosaicDefinition(mosaic.mosaicId).map(mosaicDefinition => {
-                return MosaicTransferable.createWithMosaicDefinition(mosaicDefinition, mosaic.quantity / Math.pow(10, mosaicDefinition.properties.divisibility));
-              });
-            }
-          })
-          .toArray();
-    }
-
-
-    /**
-     * Returns if transaction has at least one mosaic with levy
-     * @param mosaics array of mosaics
-     * @return Boolean indicating the result
-     */
-
-    public transactionHasAtLeastOneMosaicWithLevy(mosaics: MosaicTransferable[]): boolean{
-        var hasLevy = false;
-        mosaics.filter(mosaic => {
-            if (mosaic.levy) hasLevy = true; 
+    /* Custom */
+    public getMosaicTransferableDefinition(mosaicId: MosaicId, amount: number):  Observable<MosaicTransferable>{
+        return this.mosaicHttp.getMosaicDefinition(mosaicId).map(mosaicDefinition => {
+            return MosaicTransferable.createWithMosaicDefinition(mosaicDefinition, amount / Math.pow(10, mosaicDefinition.properties.divisibility));
         });
-        return hasLevy;
-    }
-
-
-    /**
-     * Get all confirmed transactions of an account
-     * @param address account Address
-     * @return Promise with account transactions
-     */
-    public getAllTransactionsFromAnAccount(address: Address): Observable<Transaction[]> {
-        return this.accountHttp.allTransactions(address);
-    }
-
-    /**
-     * Get all unconfirmed transactions of an account
-     * @param address account Address
-     * @return Promise with account transactions
-     */
-    public getUnconfirmedTransactionsFromAnAccount(address: Address): Observable<Transaction[]> {
-        return this.accountHttp.unconfirmedTransactions(address);
     }
 }

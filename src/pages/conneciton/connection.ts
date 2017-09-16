@@ -19,6 +19,7 @@ import {SimpleWallet} from "nem-library";
 export class AccountPage {
     common: any;
     selectedWallet: SimpleWallet;
+    qrCode: any;
     private onResumeSubscription: Subscription;
 
     constructor(public navCtrl: NavController, private nem: NemProvider, private wallet: WalletProvider, private loading: LoadingController, private alert: AlertProvider, private platform: Platform, public translate: TranslateService) {
@@ -35,6 +36,7 @@ export class AccountPage {
     }
 
     /**
+     * Init view with QR and current wallet info
      * @param transaction  transaction object
      */
     ionViewWillEnter() {
