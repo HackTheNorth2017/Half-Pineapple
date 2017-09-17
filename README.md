@@ -1,6 +1,7 @@
-## Half Pinneaple
+## Half Pinneaple - Wifi Hotspot, enabled by pineapple token
 
-[HalfPinneaple](#) is a service ... [TODO]
+[HalfPinneaple](#) is a mobile App that allows anybody to use pineapple hotspots in exchange for their pineapple tokens.
+
 
 ### Getting Started
 * Clone this repository: `git clone https://github.com/dgarcia360/NEMPay`.
