@@ -44,13 +44,18 @@
     </div>
     <div *ngIf="!recipient">
         <div>
-            <img src="assets/img/happy-pineapple/happy.png" style="height: 250px; margin: 0 auto;"/>
+            <img src="assets/img/sad-pineapple/sad.png" style="margin: 0 auto;
+    height: 400px;
+    display: block;
+    margin-top: 40px;"/>
         </div>
         <h5 style="text-align: center; margin-top: 20px;"> You don't have connection :(</h5>
     </div>
     <div *ngIf="time != 0">
-        <img src="assets/img/sad-pineapple/sad.png" style="height: 250px; margin: 0 auto;"/>
-
+        <img src="assets/img/happy-pineapple/happy.png" style="margin: 0 auto;
+    height: 400px;
+    display: block;
+    margin-top: 40px;"/>
         <h5 style="text-align: center; margin-top: 20px;"> Happy surfing! :)</h5>
     </div>
 </ion-content>

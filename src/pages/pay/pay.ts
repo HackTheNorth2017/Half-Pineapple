@@ -89,14 +89,14 @@ export class PayPage {
 
      //checks first connection
     private _checkConnection(){
-
         return this.http.get(this.url +"/health")
               .toPromise().then( res =>{
                   let data = res.json();
                   this.recipient = new Address(data.address);
+                  console.log("CONNECTION OK" + " recipient" + this.recipient.plain());
                   return true;
               }).catch(error =>{
-                console.log(error);
+                console.log("ERROR CONNECTION");
                 this.recipient = null;
                 this.time = 0;
                 return false;
@@ -119,9 +119,11 @@ export class PayPage {
               .toPromise().then( res =>{
                   let data = res.json();
                   this.time = data.timeLeft;
-                  return true;
+                    console.log("STATUS OK"  + this.time);
+
+                    return true;
               }).catch(error =>{
-                console.log(error);
+                    console.log("ERROR STATUS");
                 this.time = 0;
                 return false;
             });
