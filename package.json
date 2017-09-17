@@ -29,7 +29,7 @@
         "@ionic/storage": "^2.0.1",
         "@ngx-translate/core": "^7.0.0",
         "@ngx-translate/http-loader": "^0.1.0",
-        "cordova-ios": "^4.4.0",
+        "cordova-ios": "^4.5.0",
         "cordova-plugin-app-version": "^0.1.9",
         "cordova-plugin-compat": "^1.1.0",
         "cordova-plugin-console": "^1.0.7",
@@ -39,6 +39,7 @@
         "cordova-plugin-splashscreen": "^4.0.3",
         "cordova-plugin-statusbar": "^2.2.3",
         "cordova-plugin-whitelist": "^1.3.2",
+        "cordova-sqlite-storage": "^2.0.4",
         "crypto-js": "^3.1.9-1",
         "es6-promise-plugin": "^4.1.0",
         "ionic-angular": "3.4.2",
@@ -67,7 +68,8 @@
             "cordova-plugin-whitelist": {},
             "ionic-plugin-keyboard": {},
             "cordova-plugin-network-information": {},
-            "cordova-plugin-app-version": {}
+            "cordova-plugin-app-version": {},
+            "cordova-sqlite-storage": {}
         },
         "platforms": [
             "ios"
