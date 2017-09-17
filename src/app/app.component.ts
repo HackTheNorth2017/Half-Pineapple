@@ -7,6 +7,7 @@ import {SplashScreen} from '@ionic-native/splash-screen';
 import {AlertProvider} from '../providers/alert/alert.provider';
 import {LanguageProvider} from '../providers/language/language.provider';
 
+import {PayPage} from '../pages/pay/pay';
 import {AccountPage} from '../pages/account/account';
 import {LoginPage} from '../pages/login/login';
 
@@ -35,6 +36,12 @@ export class MyApp {
             splashScreen.hide();
         });
     }
+
+    goToPay(params) {
+        if (!params) params = {};
+        this.navCtrl.setRoot(PayPage);
+    }
+
     goToAccount(params) {
         if (!params) params = {};
         this.navCtrl.setRoot(AccountPage);

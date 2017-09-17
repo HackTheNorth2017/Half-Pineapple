@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
+import { Http } from '@angular/http';
 import {NavController, NavParams, AlertController, LoadingController} from 'ionic-angular';
 import {Keyboard} from '@ionic-native/keyboard';
 import {TranslateService} from '@ngx-translate/core';
@@ -20,6 +21,7 @@ import 'rxjs/add/operator/toPromise';
     templateUrl: 'pay.html'
 })
 export class PayPage {
+    balance: number;
     recipient: Address;
     fee: number;
     message: string;
@@ -28,32 +30,50 @@ export class PayPage {
     common: any;
     amount: number;
     selectedWallet: SimpleWallet;
+    time : number;
+    url: string;
+    statusInterval : any;
+    statusIntervalCounter: number; 
 
-    constructor(public navCtrl: NavController, private navParams: NavParams, private nem: NemProvider, private wallet: WalletProvider, private alert: AlertProvider, private toast: ToastProvider, private alertCtrl: AlertController, private loading: LoadingController, private keyboard: Keyboard, public translate: TranslateService) {
-
-        this.amount = 0;
+    constructor(public navCtrl: NavController, private navParams: NavParams, private nem: NemProvider, private wallet: WalletProvider, private alert: AlertProvider, private toast: ToastProvider, private alertCtrl: AlertController, private loading: LoadingController, private keyboard: Keyboard, public translate: TranslateService, private http: Http) {
+        this.statusIntervalCounter = 0;
+        this.url = "https://ixjdbaxwvy.localtunnel.me";
+        this.time = 0;
+        this.amount = 0.5;
         // get mosaic and recipient
         this.recipient = null;
         this.fee = 0;
         this.message = '';
-
+        this.balance = 0;
         //Stores sensitive data.
         this.common = {};
         this._clearCommon();
-
+        
+        //first call
+        this._checkConnection().then(value =>{
+            if(!value){
+                setInterval(() => {this._checkConnection().then(_ =>{});}, 1000 * 60);
+            }
+        });
     }
 
     ionViewWillEnter() {
-        this.wallet.getSelectedWallet().then(
-            value => {
-                if (!value) {
-                    this.navCtrl.setRoot(LoginPage);
-                }
-                else {
-                    this.selectedWallet = value;
-                }
+        this.wallet.getSelectedWallet().then(value => {
+            if (!value) {
+                this.navCtrl.setRoot(LoginPage);
             }
-        )
+            else {
+                this.selectedWallet = value;
+                this.nem.getBalance(this.selectedWallet.address).then(mosaics => {
+                    console.log(mosaics);
+                    for (var mosaic of mosaics){
+                        if(mosaic.mosaicId.namespaceId == "pineapple" && mosaic.mosaicId.name == "token"){
+                           this.balance = mosaic.amount;
+                        }
+                    }
+                });
+            }
+       })
     }
 
     /**
@@ -65,6 +85,49 @@ export class PayPage {
             'privateKey': ''
         };
     }
+
+
+     //checks first connection
+    private _checkConnection(){
+
+        return this.http.get(this.url +"/health")
+              .toPromise().then( res =>{
+                  let data = res.json();
+                  this.recipient = new Address(data.address);
+                  return true;
+              }).catch(error =>{
+                console.log(error);
+                this.recipient = null;
+                this.time = 0;
+                return false;
+            });
+    };
+
+
+    private _checkStatus(){
+
+         ++this.statusIntervalCounter;
+        
+        if(this.statusIntervalCounter == 3){
+            this.statusIntervalCounter = 0;
+            this.recipient = null;
+            this.time = 0;
+            return Promise.resolve(false);
+        }
+        else{
+            return this.http.get(this.url +"/status?address="+ this.recipient.plain())
+              .toPromise().then( res =>{
+                  let data = res.json();
+                  this.time = data.timeLeft;
+                  return true;
+              }).catch(error =>{
+                console.log(error);
+                this.time = 0;
+                return false;
+            });
+          }
+    };
+
 
     /**
      * check if address is from network
@@ -152,7 +215,13 @@ export class PayPage {
                                             this._confirmTransaction().subscribe(value => {
                                                 loader.dismiss();
                                                 this.toast.showTransactionConfirmed();
-                                                //this.navCtrl.push(ConnectedPage, {});
+                                                
+                                                this._checkStatus().then(value =>{
+                                                    if(!value){
+                                                        this.statusInterval = setInterval(() => {this._checkStatus().then(_ =>{});}, 1000 * 60);
+                                                    }
+                                                });
+
                                                 this._clearCommon();
                                             }, error => {
                                                 loader.dismiss();
@@ -192,10 +261,11 @@ export class PayPage {
 
         this.nem.getMosaicTransferableDefinition(new MosaicId('pineapple', 'token'), this.amount).subscribe(selectedMosaic =>{
             this.selectedMosaic = selectedMosaic;
+            console.log(selectedMosaic);
             var transferTransaction =  this.nem.prepareMosaicTransaction(this.recipient,[this.selectedMosaic], this.message);
             this.fee = transferTransaction.fee;
+            this._presentPrompt();
         });
-        this._presentPrompt();
     }
 
     public selectFullPineapple(){

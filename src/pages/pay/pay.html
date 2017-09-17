@@ -4,27 +4,53 @@
             <ion-icon name="ios-menu-outline"></ion-icon>
         </button>
         <ion-title>
-            {{'CONNECTION' | translate }}
+        {{'SELECT_CONNECTION_TYPE' | translate }}
         </ion-title>
     </ion-navbar>
 </ion-header>
 <ion-content padding id="account">
-    <h5>{{'SELECT_CONNECTION_TYPE' | translate }}</h5>
-    <div class="selector ">
-        
-        <div on-click="selectHalfPinneapple()">
-            Half Pineapple
+    <div class="selector" *ngIf="recipient && time == 0">
+        <div class="balance" style="text-align: right;">
+            <h5><b>Balance</b> {{balance}} <img  src="assets/img/full-pineapple/pineapple.png" style="width:15px;"/></h5> 
+
+        </div>
+        <div on-click="selectHalfPinneapple()" class="align-center">
+                <img *ngIf="amount == 0.5" src="assets/img/half-pineapple/pineapple.png" class="pineapple active"/>
+                <img *ngIf="amount != 0.5" src="assets/img/half-pineapple/pineapple-black.png" class="pineapple"/>
+            <div>
+                <h6>Half Pineapple</h6>
+                <p>30 minutes</p>
+                <p>0.5 pineapple:token</p>
+            </div>
         </div>
 
-        <div on-click="selectFullPineapple()">
-            Full Pineapple
+        <div on-click="selectFullPineapple()" class="align-center">
+                <img *ngIf="amount == 1" src="assets/img/full-pineapple/pineapple.png" class="pineapple active"/>
+                <img *ngIf="amount != 1" src="assets/img/full-pineapple/pineapple-black.png" class="pineapple"/>
+
+                <div>
+                    <h6>Full Pineapple</h6>
+                    <p>1 hour</p>
+                    <p>1 pineapple:token</p>
+                </div>
         </div>
         
-        <div class="">
+        <div>
             <div class="spacer" style="height:20px;"></div>
             <button ion-button color="positive" block on-click="startTransaction()" [disabled]="amount == 0">
                 {{'PAY_AND_CONNECT' | translate}}
             </button>
         </div>
+    </div>
+    <div *ngIf="!recipient">
+        <div>
+            <img src="assets/img/happy-pineapple/happy.png" style="height: 250px; margin: 0 auto;"/>
+        </div>
+        <h5 style="text-align: center; margin-top: 20px;"> You don't have connection :(</h5>
+    </div>
+    <div *ngIf="time != 0">
+        <img src="assets/img/sad-pineapple/sad.png" style="height: 250px; margin: 0 auto;"/>
+
+        <h5 style="text-align: center; margin-top: 20px;"> Happy surfing! :)</h5>
     </div>
 </ion-content>

@@ -65,7 +65,6 @@ export class NemProvider {
         return address.network() == NEMLibrary.getNetworkType();
     }
 
-
     /**
      * Prepares mosaic transaction
      * @param recipientAddress recipientAddress
@@ -93,7 +92,18 @@ export class NemProvider {
     /* Custom */
     public getMosaicTransferableDefinition(mosaicId: MosaicId, amount: number):  Observable<MosaicTransferable>{
         return this.mosaicHttp.getMosaicDefinition(mosaicId).map(mosaicDefinition => {
-            return MosaicTransferable.createWithMosaicDefinition(mosaicDefinition, amount / Math.pow(10, mosaicDefinition.properties.divisibility));
+            return MosaicTransferable.createWithMosaicDefinition(mosaicDefinition, amount);
         });
     }
+
+
+     /**
+      * Get mosaics form an account
+      * @param address address to check balance
+      * @return Promise with mosaics information
+      */
+     public getBalance(address: Address): Promise<MosaicTransferable[]> {
+         return this.accountOwnedMosaicsSerivce.fromAddress(address).toPromise();
+     }
+
 }
