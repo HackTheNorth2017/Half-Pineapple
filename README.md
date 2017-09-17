@@ -4,7 +4,7 @@
 
 
 ### Getting Started
-* Clone this repository: `git clone https://github.com/dgarcia360/NEMPay`.
+* Clone this repository: `git clone https://github.com/HackTheNorth2017/Half-Pineapple-App`.
 * Install ionic (`npm install -g ionic`)
 * Install cordova (`npm install -g cordova`)
 * Run `npm install` from the project root.
